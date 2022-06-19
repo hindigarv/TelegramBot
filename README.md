@@ -10,4 +10,4 @@ git config user.email "hindi.garv.001@gmail.com"
 
 ## Run in local
 
-`./gradlew run`
+`TOKEN=123456:ABCD1234abcd_abcd1234ABCD ./gradlew run`
