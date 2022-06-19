@@ -1,11 +1,15 @@
 package org.hindigarv.telegram
 
+import org.hindigarv.core.WordFinder
+import org.hindigarv.core.model.Word
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException
 
 class HindiGarvBot : TelegramLongPollingBot() {
+    private val wordFinder = WordFinder()
+
     override fun getBotUsername(): String {
         return "HindiGarvBot"
     }
@@ -21,12 +25,20 @@ class HindiGarvBot : TelegramLongPollingBot() {
         val text = receivedMessage.text
         val chatId = receivedMessage.chatId
 
-        // prepare a message to send
-        val message = SendMessage(chatId.toString(), text)
+        val words = wordFinder.find(text)
+        val reply = prepareReply(words)
+
         try {
-            execute(message) // send the message
+            execute(SendMessage(chatId.toString(), reply)) // send the message
         } catch (e: TelegramApiException) {
             e.printStackTrace()
         }
+    }
+
+    private fun prepareReply(words: List<Word>): String {
+        if (words.isEmpty()) {
+            return "\uD83D\uDC4D" // 👍
+        }
+        return words.joinToString("\n") { "${it.shabd} (${it.mool}) -> ${it.paryays}" }
     }
 }
