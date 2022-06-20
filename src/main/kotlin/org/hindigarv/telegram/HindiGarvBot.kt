@@ -28,6 +28,11 @@ class HindiGarvBot : TelegramLongPollingBot() {
         val words = wordFinder.find(text)
         val reply = prepareReply(words)
 
+        println("message from ${receivedMessage.from.firstName} ${receivedMessage.from.lastName} " +
+                "(${receivedMessage.from.id}), " +
+                "text => \"${text}\", " +
+                "reply =>  \"${reply.replace("\n", "\\n")}\"")
+
         try {
             execute(SendMessage(chatId.toString(), reply)) // send the message
         } catch (e: TelegramApiException) {
@@ -39,6 +44,6 @@ class HindiGarvBot : TelegramLongPollingBot() {
         if (words.isEmpty()) {
             return "\uD83D\uDC4D" // 👍
         }
-        return words.joinToString("\n") { "${it.shabd} (${it.mool}) -> ${it.paryays}" }
+        return words.joinToString("\n") { "${it.shabd} (${it.mool}) -> ${it.paryays.joinToString(", ")}" }
     }
 }
