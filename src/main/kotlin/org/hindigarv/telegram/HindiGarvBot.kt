@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException
 
 class HindiGarvBot : TelegramLongPollingBot() {
-    private val wordFinder = WordFinder()
+    private val wordFinder = WordFinder(autoRefresh = true)
 
     override fun getBotUsername(): String {
         return "HindiGarvBot"
