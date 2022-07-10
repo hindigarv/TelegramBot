@@ -21,3 +21,9 @@ dependencies {
 application {
     mainClass.set("org.hindigarv.telegram.AppKt")
 }
+
+tasks.jar {
+    manifest.attributes["Main-Class"] = "org.hindigarv.telegram.AppKt"
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
