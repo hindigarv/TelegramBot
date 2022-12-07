@@ -41,7 +41,11 @@ class HindiGarvBot : TelegramLongPollingBot() {
                 "reply =>  \"${reply.replace("\n", "\\n")}\"")
 
         try {
-            execute(SendMessage(chatId.toString(), reply)) // send the message
+            val replyMessage = SendMessage(chatId.toString(), reply)
+            if (message.isGroupMessage) {
+                replyMessage.replyToMessageId = message.messageId
+            }
+            execute(replyMessage) // send the message
         } catch (e: TelegramApiException) {
             e.printStackTrace()
         }
