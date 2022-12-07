@@ -15,6 +15,8 @@ dependencies {
     implementation("io.github.hindigarv:shabdkosh:1.0.4")
     implementation("org.telegram:telegrambots:6.0.1")
     implementation("org.slf4j:slf4j-simple:1.7.36")
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testImplementation("org.jetbrains.kotlin:kotlin-test") // Use the Kotlin test library.
     testImplementation("org.assertj:assertj-core:3.23.1")
 }
