@@ -53,9 +53,7 @@ class HindiGarvBot : TelegramLongPollingBot() {
     private fun Message.doesNotMentionBot(): Boolean = !this.doesMentionBot()
 
     private fun prepareReply(words: List<Word>): String {
-        if (words.isEmpty()) {
-            return "\uD83D\uDC4D" // 👍
-        }
+        if (words.isEmpty()) return ".👍"
         return words.joinToString("\n") { "${it.shabd} (${it.mool}) -> ${it.paryays.joinToString(", ")}" }
     }
 }
