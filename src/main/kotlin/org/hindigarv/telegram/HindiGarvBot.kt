@@ -4,6 +4,7 @@ import org.hindigarv.core.WordFinder
 import org.hindigarv.core.model.Word
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
+import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException
 
@@ -20,16 +21,22 @@ class HindiGarvBot : TelegramLongPollingBot() {
 
     override fun onUpdateReceived(update: Update) {
         if (!update.hasMessage()) return  // ignore if update has no message
-        val receivedMessage = update.message
-        if (!receivedMessage.hasText()) return  // ignore if message has no text
-        val text = receivedMessage.text
-        val chatId = receivedMessage.chatId
+        val message = update.message
+
+        // ignore if message has no text
+        if (!message.hasText()) return
+
+        // Because we do not want to analyze all the messages, rather only the mentioned ones.
+        if (message.isGroupMessage && message.doesNotMentionBot()) return
+
+        val text = message.text
+        val chatId = message.chatId
 
         val words = wordFinder.find(text)
         val reply = prepareReply(words)
 
-        println("message from ${receivedMessage.from.firstName} ${receivedMessage.from.lastName} " +
-                "(${receivedMessage.from.id}), " +
+        println("message from ${message.from.firstName} ${message.from.lastName} " +
+                "(${message.from.id}), " +
                 "text => \"${text}\", " +
                 "reply =>  \"${reply.replace("\n", "\\n")}\"")
 
@@ -39,6 +46,11 @@ class HindiGarvBot : TelegramLongPollingBot() {
             e.printStackTrace()
         }
     }
+
+    private fun Message.doesMentionBot(): Boolean =
+        this.entities.any { it.type == "mention" && it.text == "@HindiGarvBot" }
+
+    private fun Message.doesNotMentionBot(): Boolean = !this.doesMentionBot()
 
     private fun prepareReply(words: List<Word>): String {
         if (words.isEmpty()) {
