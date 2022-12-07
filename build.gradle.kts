@@ -12,7 +12,7 @@ repositories {
 dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom")) // Align versions of all Kotlin components
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8") // Use the Kotlin JDK 8 standard library.
-    implementation("io.github.hindigarv:shabdkosh:1.0.3")
+    implementation("io.github.hindigarv:shabdkosh:1.0.4")
     implementation("org.telegram:telegrambots:6.0.1")
     implementation("org.slf4j:slf4j-simple:1.7.36")
     testImplementation("org.jetbrains.kotlin:kotlin-test") // Use the Kotlin test library.
