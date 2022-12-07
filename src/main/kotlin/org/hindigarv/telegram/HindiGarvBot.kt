@@ -48,7 +48,9 @@ class HindiGarvBot : TelegramLongPollingBot() {
     }
 
     private fun Message.doesMentionBot(): Boolean =
-        this.entities.any { it.type == "mention" && it.text == "@HindiGarvBot" }
+        this.entities
+            ?.any { it.type == "mention" && it.text == "@HindiGarvBot" }
+            ?: false
 
     private fun Message.doesNotMentionBot(): Boolean = !this.doesMentionBot()
 
